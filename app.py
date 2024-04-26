@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pickle
 import re
 import string
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-app = Flask(__name__)
 
 # Load the trained model
 with open('sentiment_analysis.pickle', 'rb') as file:
@@ -42,19 +40,17 @@ def predict_sentiment(text):
 def sentiment_label(prediction):
     return "Negative" if prediction == 1 else "Positive"
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Streamlit UI
+st.title("Sentiment Analysis")
+user_input = st.text_input("Enter your text:")
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    text = request.form['text']
-    if text:
-        prediction = predict_sentiment(text)
+if st.button("Predict"):
+    if user_input:
+        prediction = predict_sentiment(user_input)
         sentiment = sentiment_label(prediction)
-        return render_template('index.html', sentiment=sentiment)
+        label_color = "red" if sentiment == "Negative" else "green"
+        colored_text = f'<span style="color: {label_color}; font-size: 20px;">{sentiment}</span>'
+        final_result = f"That feedback is {colored_text}"
+        st.markdown(final_result, unsafe_allow_html=True)
     else:
-        return render_template('index.html', message="Please enter some text before predicting.")
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        st.write("Please enter some text before predicting.")
