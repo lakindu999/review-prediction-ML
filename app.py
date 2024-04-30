@@ -2,6 +2,8 @@ import streamlit as st
 import pickle
 import re
 import string
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
