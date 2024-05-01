@@ -43,7 +43,7 @@ def sentiment_label(prediction):
     return "Negative" if prediction == 1 else "Positive"
 
 # Streamlit UI
-st.title("Sentiment Analysis")
+st.title("User Review Sentiment Prediction System")
 user_input = st.text_input("Enter your text:")
 
 if st.button("Predict"):
@@ -55,4 +55,4 @@ if st.button("Predict"):
         final_result = f"That feedback is {colored_text}"
         st.markdown(final_result, unsafe_allow_html=True)
     else:
-        st.write("Please enter some text before predicting.")
+        st.write("Please Enter some text before predicting.")
